@@ -1,4 +1,4 @@
-const { processCommandLineArgs } = require("./app")
+const { processCommandLineArgs } = require("./main")
 
 describe("Parsing command line arguments", () => {
 
