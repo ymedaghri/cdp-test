@@ -1,4 +1,4 @@
-const { processCommandLineArgs } = require("./app")
+const { processCommandLineArgs, parseCommandLineArgs, FILTER_COMMAND } = require("./app")
 
 describe("Parsing command line arguments", () => {
 
@@ -60,6 +60,17 @@ describe("Parsing command line arguments", () => {
 
         //Then
         expect(transformedData).toStrictEqual(data)
+    })
+
+    test("Extracting the parameter of the command line argument as well as the command", () => {
+        //Given
+        const args = ["--filter=ry"]
+        //When
+        const commands = parseCommandLineArgs(args)
+
+        //Then
+        expect(commands[0].transformation).toStrictEqual(FILTER_COMMAND)
+        expect(commands[0].parameter).toStrictEqual("ry")
     })
 
 })

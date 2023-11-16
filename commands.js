@@ -2,7 +2,7 @@ const COUNT_COMMAND = {
     matcher: (arg) => {
         const regex = /^--count$/;
         const match = arg.match(regex);
-        return !!match
+        return { doesMatch: !!match }
     },
     process: (data) => {
         return data.map(element => {
@@ -22,7 +22,7 @@ const FILTER_COMMAND = {
     matcher: (arg) => {
         const regex = /^--filter=(.+)$/;
         const match = arg.match(regex);
-        return !!match
+        return (match) ? { doesMatch: true, parameter: match[1] } : { doesMatch: false }
     },
     process: (data, filter) => {
         return data.map(element => {
