@@ -18,9 +18,9 @@ const parseCommandLineArgs = (args) => {
 const processCommandLineArgs = (args, data) => {
     const commands = parseCommandLineArgs(args)
     return commands.reduce((acc, command) => {
-        return [...acc, ...command.process(data)]
-    }, [])
+        return [...command.process(acc)]
+    }, data)
 
 }
 
-module.exports = { parseCommandLineArgs, processCommandLineArgs }
+module.exports = { processCommandLineArgs }

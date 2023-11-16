@@ -23,6 +23,18 @@ const FILTER_COMMAND = {
         const regex = /^--filter=(.+)$/;
         const match = arg.match(regex);
         return !!match
+    },
+    process: (data, filter) => {
+        return data.map(element => {
+            const { name, people } = element
+
+            const peopleWithFilteredAnimals = people.map(
+                person => ({
+                    ...person, animals: animals.filter(animal => animal.name.includes(filter))
+                })
+            )
+            return { name, people: peopleWithCount }
+        })
     }
 }
 

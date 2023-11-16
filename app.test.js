@@ -1,54 +1,12 @@
-const { parseCommandLineArgs, processCommandLineArgs } = require("./app")
-const { COUNT_COMMAND, FILTER_COMMAND } = require("./commands")
+const { processCommandLineArgs } = require("./app")
 
 describe("Parsing command line arguments", () => {
 
-    test("Should parse a unary command line argument : --count", () => {
-        //Given
-        const args = ["--count"]
-
-        //When
-        const commands = parseCommandLineArgs(args)
-
-        //Then
-        expect(commands).toHaveLength(1)
-        expect(commands[0]).toBe(COUNT_COMMAND)
-    })
 
     test("Should process the command line argument --count to count the animals under a person", () => {
         //Given
         const args = ["--count"]
-        const data = [{
-            name: 'Dillauti',
-            people:
-                [{
-                    name: 'Winifred Graham',
-                    animals:
-                        [
-                            { name: 'Anoa' },
-                            { name: 'Duck' }
-                        ]
-                }, {
-                    name: 'Blanche Viciani',
-                    animals:
-                        [{ name: 'Barbet' },
-                        { name: 'Rhea' },
-                        { name: 'Snakes' }]
-                }]
-        },
-        {
-            name: 'Tohabdal',
-            people:
-                [{
-                    name: 'Effie Houghton',
-                    animals:
-                        [{ name: 'Zebra' },
-                        { name: 'Ring-tailed Lemur' },
-                        { name: 'Fly' },
-                        { name: 'Blue Iguana' }]
-                }]
-        }]
-
+        const data = getData()
         //When
         const transformedData = processCommandLineArgs(args, data)
 
@@ -60,13 +18,13 @@ describe("Parsing command line arguments", () => {
                     name: 'Winifred Graham [2]',
                     animals:
                         [{ name: 'Anoa' },
-                        { name: 'Duck' }]
+                        { name: 'John Dory' }]
                 }, {
                     name: 'Blanche Viciani [3]',
                     animals:
-                        [{ name: 'Barbet' },
+                        [{ name: 'Oryx' },
                         { name: 'Rhea' },
-                        { name: 'Snakes' }]
+                        { name: 'Ryan Blanton' }]
                 }]
         }, {
             name: 'Tohabdal',
@@ -82,39 +40,60 @@ describe("Parsing command line arguments", () => {
         }])
     })
 
-    test("Should return an empty string when no known commands are passed as command line argument : uppercase", () => {
+    test("Should process the command line argument --uppercase by doing nothing to the data since this command is unknown", () => {
         //Given
         const args = ["--uppercase"]
-
+        const data = getData()
         //When
-        const commands = parseCommandLineArgs(args)
+        const transformedData = processCommandLineArgs(args, data)
 
         //Then
-        expect(commands).toHaveLength(0)
+        expect(transformedData).toStrictEqual(data)
     })
 
-    test("Should parse a binary command line argument : --filter=", () => {
-        //Given
-        const args = ["--filter=ry"]
-
-        //When
-        const commands = parseCommandLineArgs(args)
-
-        //Then
-        expect(commands).toHaveLength(1)
-        expect(commands[0]).toBe(FILTER_COMMAND
-        )
-    })
-
-    test("Should not parse a binary command line argument who is presented as unary : --filter", () => {
+    test("Should process the command line argument --filter with no params by doing nothing to the data since this command is a non unary and should receive a parameter", () => {
         //Given
         const args = ["--filter"]
-
+        const data = getData()
         //When
-        const commands = parseCommandLineArgs(args)
+        const transformedData = processCommandLineArgs(args, data)
 
         //Then
-        expect(commands).toHaveLength(0)
-    }
-    )
+        expect(transformedData).toStrictEqual(data)
+    })
+
 })
+
+
+function getData() {
+    return [{
+        name: 'Dillauti',
+        people:
+            [{
+                name: 'Winifred Graham',
+                animals:
+                    [
+                        { name: 'Anoa' },
+                        { name: 'John Dory' }
+                    ]
+            }, {
+                name: 'Blanche Viciani',
+                animals:
+                    [{ name: 'Oryx' },
+                    { name: 'Rhea' },
+                    { name: 'Ryan Blanton' }]
+            }]
+    },
+    {
+        name: 'Tohabdal',
+        people:
+            [{
+                name: 'Effie Houghton',
+                animals:
+                    [{ name: 'Zebra' },
+                    { name: 'Ring-tailed Lemur' },
+                    { name: 'Fly' },
+                    { name: 'Blue Iguana' }]
+            }]
+    }]
+}
