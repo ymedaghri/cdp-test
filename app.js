@@ -2,18 +2,20 @@ const { COUNT_COMMAND, FILTER_COMMAND } = require("./commands");
 
 const parseCommandLineArgs = (args) => {
 
-    const commands = args.map(arg => {
-        if (COUNT_COMMAND.matcher(arg).doesMatch) {
-            return { transformation: COUNT_COMMAND }
-        }
-        if (FILTER_COMMAND.matcher(arg).doesMatch) {
-            const parameter = FILTER_COMMAND.matcher(arg).parameter
-            return { transformation: FILTER_COMMAND, parameter }
-        }
-        return null
-    }).filter(command => command != null);
+    const temporallyCoupledCommands = [FILTER_COMMAND, COUNT_COMMAND]
+    const instructions = []
 
-    return commands
+    for (const command of temporallyCoupledCommands) {
+        instructions.push(...args.map(arg => {
+            if (command.matcher(arg).doesMatch) {
+                const parameter = command.matcher(arg).parameter
+                return { transformation: command, parameter }
+            }
+            return null
+        }).filter(instruction => instruction != null))
+    }
+
+    return instructions
 }
 
 const processCommandLineArgs = (args, data) => {

@@ -95,6 +95,74 @@ describe("Parsing command line arguments", () => {
                 }]
         }])
     })
+
+    test("Should parse two commands --count and --filter=ry that present natively a temporal coupling", () => {
+        //Given
+        const args = ["--filter=ry", "--count"]
+        const data = getData()
+
+        //When
+        const transformedData = processCommandLineArgs(args, data)
+
+        //Then
+        expect(transformedData).toStrictEqual([{
+            name: 'Dillauti',
+            people:
+                [{
+                    name: 'Winifred Graham [1]',
+                    animals:
+                        [{ name: 'John Dory' }]
+                }, {
+                    name: 'Blanche Viciani [2]',
+                    animals:
+                        [
+                            { name: 'Oryx' },
+                            { name: 'Ryan Blanton' }
+                        ]
+                }]
+        }, {
+            name: 'Tohabdal',
+            people:
+                [{
+                    name: 'Effie Houghton [0]',
+                    animals: []
+                }]
+        }])
+    })
+
+    test("Test the same temporal coupling in the other direction", () => {
+        //Given
+        const args = ["--count", "--filter=ry"]
+        const data = getData()
+
+        //When
+        const transformedData = processCommandLineArgs(args, data)
+
+        //Then
+        expect(transformedData).toStrictEqual([{
+            name: 'Dillauti',
+            people:
+                [{
+                    name: 'Winifred Graham [1]',
+                    animals:
+                        [{ name: 'John Dory' }]
+                }, {
+                    name: 'Blanche Viciani [2]',
+                    animals:
+                        [
+                            { name: 'Oryx' },
+                            { name: 'Ryan Blanton' }
+                        ]
+                }]
+        }, {
+            name: 'Tohabdal',
+            people:
+                [{
+                    name: 'Effie Houghton [0]',
+                    animals: []
+                }]
+        }])
+    })
 })
 
 
