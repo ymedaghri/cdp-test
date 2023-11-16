@@ -1,4 +1,4 @@
-const { processCommandLineArgs, parseCommandLineArgs, FILTER_COMMAND } = require("./app")
+const { processCommandLineArgs } = require("./app")
 
 describe("Parsing command line arguments", () => {
 
@@ -62,17 +62,39 @@ describe("Parsing command line arguments", () => {
         expect(transformedData).toStrictEqual(data)
     })
 
-    test("Extracting the parameter of the command line argument as well as the command", () => {
+    test("Should parse a binary command line argument : --filter=ry and filter accorgding to the param", () => {
         //Given
         const args = ["--filter=ry"]
+        const data = getData()
+
         //When
-        const commands = parseCommandLineArgs(args)
+        const transformedData = processCommandLineArgs(args, data)
 
         //Then
-        expect(commands[0].transformation).toStrictEqual(FILTER_COMMAND)
-        expect(commands[0].parameter).toStrictEqual("ry")
+        expect(transformedData).toStrictEqual([{
+            name: 'Dillauti',
+            people:
+                [{
+                    name: 'Winifred Graham',
+                    animals:
+                        [{ name: 'John Dory' }]
+                }, {
+                    name: 'Blanche Viciani',
+                    animals:
+                        [
+                            { name: 'Oryx' },
+                            { name: 'Ryan Blanton' }
+                        ]
+                }]
+        }, {
+            name: 'Tohabdal',
+            people:
+                [{
+                    name: 'Effie Houghton',
+                    animals: []
+                }]
+        }])
     })
-
 })
 
 

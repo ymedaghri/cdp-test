@@ -19,9 +19,10 @@ const parseCommandLineArgs = (args) => {
 const processCommandLineArgs = (args, data) => {
     const commands = parseCommandLineArgs(args)
     return commands.reduce((acc, command) => {
-        return [...command.transformation.process(acc)]
+        const { transformation, parameter } = command
+        return [...transformation.process(acc, parameter)]
     }, data)
 
 }
 
-module.exports = { FILTER_COMMAND, parseCommandLineArgs, processCommandLineArgs }
+module.exports = { processCommandLineArgs }

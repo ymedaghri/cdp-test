@@ -30,10 +30,10 @@ const FILTER_COMMAND = {
 
             const peopleWithFilteredAnimals = people.map(
                 person => ({
-                    ...person, animals: animals.filter(animal => animal.name.includes(filter))
+                    ...person, animals: person.animals.filter(animal => animal.name.toLowerCase().includes(filter.toLowerCase()))
                 })
             )
-            return { name, people: peopleWithCount }
+            return { name, people: peopleWithFilteredAnimals }
         })
     }
 }
