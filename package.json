@@ -1,7 +1,7 @@
 {
-  "name": "test",
+  "name": "ippon-test",
   "version": "1.0.0",
-  "description": "Test command line",
+  "description": "Test for Ippon with command line parsing",
   "main": "app.js",
   "scripts": {
     "test:watch": "jest --watchAll",
