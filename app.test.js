@@ -1,4 +1,4 @@
-const { parseCommandLineArgs, COUNT_COMMAND, FILTER_COMMAND } = require("./app")
+const { parseCommandLineArgs, COUNT_COMMAND, FILTER_COMMAND, processCommandLineArgs } = require("./app")
 
 describe("Parsing command line arguments", () => {
 
@@ -12,6 +12,73 @@ describe("Parsing command line arguments", () => {
         //Then
         expect(commands).toHaveLength(1)
         expect(commands[0]).toBe(COUNT_COMMAND)
+    })
+
+    test("Should process the command line argument --count to count the animals under a person", () => {
+        //Given
+        const args = ["--count"]
+        const data = [{
+            name: 'Dillauti',
+            people:
+                [{
+                    name: 'Winifred Graham',
+                    animals:
+                        [
+                            { name: 'Anoa' },
+                            { name: 'Duck' }
+                        ]
+                }, {
+                    name: 'Blanche Viciani',
+                    animals:
+                        [{ name: 'Barbet' },
+                        { name: 'Rhea' },
+                        { name: 'Snakes' }]
+                }]
+        },
+        {
+            name: 'Tohabdal',
+            people:
+                [{
+                    name: 'Effie Houghton',
+                    animals:
+                        [{ name: 'Zebra' },
+                        { name: 'Ring-tailed Lemur' },
+                        { name: 'Fly' },
+                        { name: 'Blue Iguana' }]
+                }]
+        }]
+
+        //When
+        const transformedData = processCommandLineArgs(args, data)
+
+        //Then
+        expect(transformedData).toStrictEqual([{
+            name: 'Dillauti',
+            people:
+                [{
+                    name: 'Winifred Graham [2]',
+                    animals:
+                        [{ name: 'Anoa' },
+                        { name: 'Duck' }]
+                }, {
+                    name: 'Blanche Viciani [3]',
+                    animals:
+                        [{ name: 'Barbet' },
+                        { name: 'Rhea' },
+                        { name: 'Snakes' }]
+                }]
+        }, {
+            name: 'Tohabdal',
+            people:
+                [{
+                    name: 'Effie Houghton [4]',
+                    animals:
+                        [{ name: 'Zebra' },
+                        { name: 'Ring-tailed Lemur' },
+                        { name: 'Fly' },
+                        { name: 'Blue Iguana' }]
+                }]
+        }])
     })
 
     test("Should return an empty string when no known commands are passed as command line argument : uppercase", () => {

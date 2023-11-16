@@ -3,6 +3,18 @@ const COUNT_COMMAND = {
         const regex = /^--count$/;
         const match = arg.match(regex);
         return !!match
+    },
+    process: (data) => {
+        return data.map(element => {
+            const { name, people } = element
+
+            const peopleWithCount = people.map(
+                person => ({
+                    ...person, name: `${person.name} [${person.animals.length}]`
+                })
+            )
+            return { name, people: peopleWithCount }
+        })
     }
 }
 
@@ -29,4 +41,12 @@ const parseCommandLineArgs = (args) => {
     return commands
 }
 
-module.exports = { parseCommandLineArgs, COUNT_COMMAND, FILTER_COMMAND }
+const processCommandLineArgs = (args, data) => {
+    const commands = parseCommandLineArgs(args)
+    return commands.reduce((acc, command) => {
+        return [...acc, ...command.process(data)]
+    }, [])
+
+}
+
+module.exports = { parseCommandLineArgs, processCommandLineArgs, COUNT_COMMAND, FILTER_COMMAND }
