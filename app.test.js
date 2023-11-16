@@ -1,4 +1,5 @@
-const { parseCommandLineArgs, COUNT_COMMAND, FILTER_COMMAND, processCommandLineArgs } = require("./app")
+const { parseCommandLineArgs, processCommandLineArgs } = require("./app")
+const { COUNT_COMMAND, FILTER_COMMAND } = require("./commands")
 
 describe("Parsing command line arguments", () => {
 
